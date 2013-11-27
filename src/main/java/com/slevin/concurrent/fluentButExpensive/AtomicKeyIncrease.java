@@ -1,4 +1,4 @@
-package com.github.slevin.concurrent.fluentButExpensive;
+package com.slevin.concurrent.fluentButExpensive;
 
 import com.google.common.base.Function;
 

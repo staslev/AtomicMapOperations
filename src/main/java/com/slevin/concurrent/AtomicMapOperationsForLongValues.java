@@ -1,4 +1,4 @@
-package com.github.slevin.concurrent;
+package com.slevin.concurrent;
 
 import com.google.common.base.Function;
 
@@ -25,7 +25,7 @@ public class AtomicMapOperationsForLongValues {
   }
 
   public <K> void increase(final ConcurrentMap<K, Long> map, final K key) {
-    ForConcurrentMap.withImmutableValues().putOrTransform(map, key, increaseByOneTransformer);
+    SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, increaseByOneTransformer);
   }
 
   public <K> void increase(final ConcurrentMap<K, Long> map, final K key, final long increaseBy) {
@@ -36,11 +36,11 @@ public class AtomicMapOperationsForLongValues {
       }
     };
 
-    ForConcurrentMap.withImmutableValues().putOrTransform(map, key, increaseTransformer);
+    SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, increaseTransformer);
   }
 
   public <K> void decrease(final ConcurrentMap<K, Long> map, final K key) {
-    ForConcurrentMap.withImmutableValues().putOrTransform(map, key, decreaseByOneTransformer);
+    SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, decreaseByOneTransformer);
   }
 
   public <K> void decrease(final ConcurrentMap<K, Long> map, final K key, final long decreaseBy) {
@@ -51,6 +51,6 @@ public class AtomicMapOperationsForLongValues {
       }
     };
 
-    ForConcurrentMap.withImmutableValues().putOrTransform(map, key, decreaseTransformer);
+    SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, decreaseTransformer);
   }
 }

@@ -1,6 +1,6 @@
-package com.github.slevin.concurrent;
+package com.slevin.concurrent;
 
-public class ForConcurrentMap {
+public class SomeConcurrentMap {
 
   public static AtomicMapOperationsForImmutableValues withImmutableValues() {
     return new AtomicMapOperationsForImmutableValues();

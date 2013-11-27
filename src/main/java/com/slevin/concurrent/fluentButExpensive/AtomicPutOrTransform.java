@@ -1,7 +1,7 @@
-package com.github.slevin.concurrent.fluentButExpensive;
+package com.slevin.concurrent.fluentButExpensive;
 
 import com.google.common.base.Function;
-import com.outbrain.storm.infra.utils.ConcurrentMapOperations.SomeConcurrentMap;
+import com.slevin.concurrent.SomeConcurrentMap;
 
 import java.util.concurrent.ConcurrentMap;
 

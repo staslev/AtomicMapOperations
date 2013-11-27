@@ -1,4 +1,4 @@
-package com.github.slevin.concurrent;
+package com.slevin.concurrent;
 
 import com.google.common.base.Function;
 
