@@ -3,13 +3,11 @@ package com.github.staslev.concurrent.nonblocking;
 import com.google.common.base.Function;
 import org.junit.Test;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class ForMapWithImmutableValuesTest {
 
@@ -20,7 +18,7 @@ public class ForMapWithImmutableValuesTest {
   private Integer key = 1;
   private Function<String, String> oldOrNullToNewValueTransformer = new Function<String, String>() {
     @Override
-    public String apply(@Nullable final String input) {
+    public String apply(final String input) {
       return input == null ? KEY_WAS_NOT_PRESENT : KEY_WAS_PRESENT;
     }
   };

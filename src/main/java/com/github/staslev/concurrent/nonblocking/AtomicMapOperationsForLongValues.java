@@ -1,22 +1,20 @@
 package com.github.staslev.concurrent.nonblocking;
 
 import com.google.common.base.Function;
-
-import javax.annotation.Nullable;
 import java.util.concurrent.ConcurrentMap;
 
 public class AtomicMapOperationsForLongValues {
 
   final Function<Long, Long> increaseByOneTransformer = new Function<Long, Long>() {
     @Override
-    public Long apply(@Nullable final Long previousValue) {
+    public Long apply(final Long previousValue) {
       return previousValue == null ? 1L : previousValue + 1;
     }
   };
 
   final Function<Long, Long> decreaseByOneTransformer = new Function<Long, Long>() {
     @Override
-    public Long apply(@Nullable final Long previousValue) {
+    public Long apply(final Long previousValue) {
       return previousValue == null ? -1L : previousValue - 1;
     }
   };
@@ -45,7 +43,7 @@ public class AtomicMapOperationsForLongValues {
   public <K> void increase(final ConcurrentMap<K, Long> map, final K key, final long increaseBy) {
     final Function<Long, Long> increaseTransformer = new Function<Long, Long>() {
       @Override
-      public Long apply(@Nullable final Long previousValue) {
+      public Long apply(final Long previousValue) {
         return previousValue == null ? increaseBy : previousValue + increaseBy;
       }
     };
@@ -74,7 +72,7 @@ public class AtomicMapOperationsForLongValues {
   public <K> void decrease(final ConcurrentMap<K, Long> map, final K key, final long decreaseBy) {
     final Function<Long, Long> decreaseTransformer = new Function<Long, Long>() {
       @Override
-      public Long apply(@Nullable final Long previousValue) {
+      public Long apply(final Long previousValue) {
         return previousValue == null ? -1 * decreaseBy : previousValue - decreaseBy;
       }
     };
