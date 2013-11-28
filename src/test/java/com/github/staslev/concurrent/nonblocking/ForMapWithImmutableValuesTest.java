@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class ForMapWithImmutableValuesTest {
@@ -30,7 +32,7 @@ public class ForMapWithImmutableValuesTest {
 
     NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, oldOrNullToNewValueTransformer);
 
-    assertTrue(mapUnderTest.get(key).equals(KEY_WAS_PRESENT));
+    assertThat(mapUnderTest.get(key), is(KEY_WAS_PRESENT));
   }
 
   @Test
@@ -38,6 +40,6 @@ public class ForMapWithImmutableValuesTest {
 
     NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, oldOrNullToNewValueTransformer);
 
-    assertTrue(mapUnderTest.get(key).equals(KEY_WAS_NOT_PRESENT));
+    assertThat(mapUnderTest.get(key), is(KEY_WAS_NOT_PRESENT));
   }
 }

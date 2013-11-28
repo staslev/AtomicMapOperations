@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class ForMapWithLongValuesTest {
@@ -18,7 +20,7 @@ public class ForMapWithLongValuesTest {
 
     NonBlockingOperations.forMap.withLongValues().increase(mapUnderTest, key);
 
-    assertTrue(mapUnderTest.get(key).equals(1L));
+    assertThat(mapUnderTest.get(key), is(1L));
   }
 
   @Test
@@ -28,7 +30,7 @@ public class ForMapWithLongValuesTest {
 
     NonBlockingOperations.forMap.withLongValues().increase(mapUnderTest, key);
 
-    assertTrue(mapUnderTest.get(key).equals(initialValue + 1L));
+    assertThat(mapUnderTest.get(key), is(initialValue + 1L));
   }
 
   @Test
@@ -39,7 +41,7 @@ public class ForMapWithLongValuesTest {
     final Long increaseBy = 5L;
     NonBlockingOperations.forMap.withLongValues().increase(mapUnderTest, key, increaseBy);
 
-    assertTrue(mapUnderTest.get(key).equals(initialValue + increaseBy));
+    assertThat(mapUnderTest.get(key), is(initialValue + increaseBy));
   }
 
   @Test
@@ -47,7 +49,7 @@ public class ForMapWithLongValuesTest {
 
     NonBlockingOperations.forMap.withLongValues().decrease(mapUnderTest, key);
 
-    assertTrue(mapUnderTest.get(key).equals(-1L));
+    assertThat(mapUnderTest.get(key), is(-1L));
   }
 
   @Test
@@ -57,7 +59,7 @@ public class ForMapWithLongValuesTest {
 
     NonBlockingOperations.forMap.withLongValues().decrease(mapUnderTest, key);
 
-    assertTrue(mapUnderTest.get(key).equals(initialValue - 1L));
+    assertThat(mapUnderTest.get(key), is(initialValue - 1L));
   }
 
   @Test
@@ -68,6 +70,6 @@ public class ForMapWithLongValuesTest {
     final Long decreaseBy = 5L;
     NonBlockingOperations.forMap.withLongValues().decrease(mapUnderTest, key, decreaseBy);
 
-    assertTrue(mapUnderTest.get(key).equals(initialValue - decreaseBy));
+    assertThat(mapUnderTest.get(key), is(initialValue - decreaseBy));
   }
 }
