@@ -32,7 +32,7 @@ public class AtomicMapOperationsForLongValues {
    * @param <K> The type of the keys.
    */
   public <K> void increase(final ConcurrentMap<K, Long> map, final K key) {
-    SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, increaseByOneTransformer);
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(map, key, increaseByOneTransformer);
   }
 
   /**
@@ -50,7 +50,7 @@ public class AtomicMapOperationsForLongValues {
       }
     };
 
-    SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, increaseTransformer);
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(map, key, increaseTransformer);
   }
 
   /**
@@ -61,7 +61,7 @@ public class AtomicMapOperationsForLongValues {
    * @param <K> The type of the keys.
    */
   public <K> void decrease(final ConcurrentMap<K, Long> map, final K key) {
-    SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, decreaseByOneTransformer);
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(map, key, decreaseByOneTransformer);
   }
 
   /**
@@ -79,6 +79,6 @@ public class AtomicMapOperationsForLongValues {
       }
     };
 
-    SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, decreaseTransformer);
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(map, key, decreaseTransformer);
   }
 }

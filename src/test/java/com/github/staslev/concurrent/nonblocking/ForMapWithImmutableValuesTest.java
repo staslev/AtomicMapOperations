@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.assertTrue;
 
-public class SomeConcurrentMapWithImmutableValuesTest {
+public class ForMapWithImmutableValuesTest {
 
   public static final String KEY_WAS_NOT_PRESENT = "key_was_not_present";
   public static final String KEY_WAS_PRESENT = "key_was_present";
@@ -28,7 +28,7 @@ public class SomeConcurrentMapWithImmutableValuesTest {
 
     mapUnderTest.put(key, initialValue);
 
-    SomeConcurrentMap.withImmutableValues().putOrTransform(mapUnderTest, key, oldOrNullToNewValueTransformer);
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, oldOrNullToNewValueTransformer);
 
     assertTrue(mapUnderTest.get(key).equals(KEY_WAS_PRESENT));
   }
@@ -36,7 +36,7 @@ public class SomeConcurrentMapWithImmutableValuesTest {
   @Test
   public void test_WhenKeyIsPresent_TransformerResultAssignedToKey() throws Exception {
 
-    SomeConcurrentMap.withImmutableValues().putOrTransform(mapUnderTest, key, oldOrNullToNewValueTransformer);
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, oldOrNullToNewValueTransformer);
 
     assertTrue(mapUnderTest.get(key).equals(KEY_WAS_NOT_PRESENT));
   }

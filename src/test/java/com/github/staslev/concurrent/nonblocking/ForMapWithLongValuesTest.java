@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import static org.junit.Assert.assertTrue;
 
-public class SomeConcurrentMapWithLongValuesTest {
+public class ForMapWithLongValuesTest {
 
   private ConcurrentMap<String, Long> mapUnderTest = new ConcurrentHashMap<String, Long>();
   private String key = "key";
@@ -16,7 +16,7 @@ public class SomeConcurrentMapWithLongValuesTest {
   @Test
   public void test_WhenKeyNotPresent_IncreasesValueByOne() throws Exception {
 
-    SomeConcurrentMap.withLongValues().increase(mapUnderTest, key);
+    NonBlockingOperations.forMap.withLongValues().increase(mapUnderTest, key);
 
     assertTrue(mapUnderTest.get(key).equals(1L));
   }
@@ -26,7 +26,7 @@ public class SomeConcurrentMapWithLongValuesTest {
 
     mapUnderTest.put(key, initialValue);
 
-    SomeConcurrentMap.withLongValues().increase(mapUnderTest, key);
+    NonBlockingOperations.forMap.withLongValues().increase(mapUnderTest, key);
 
     assertTrue(mapUnderTest.get(key).equals(initialValue + 1L));
   }
@@ -37,7 +37,7 @@ public class SomeConcurrentMapWithLongValuesTest {
     mapUnderTest.put(key, initialValue);
 
     final Long increaseBy = 5L;
-    SomeConcurrentMap.withLongValues().increase(mapUnderTest, key, increaseBy);
+    NonBlockingOperations.forMap.withLongValues().increase(mapUnderTest, key, increaseBy);
 
     assertTrue(mapUnderTest.get(key).equals(initialValue + increaseBy));
   }
@@ -45,7 +45,7 @@ public class SomeConcurrentMapWithLongValuesTest {
   @Test
   public void test_WhenKeyNotPresent_DecreasesValueByOne() throws Exception {
 
-    SomeConcurrentMap.withLongValues().decrease(mapUnderTest, key);
+    NonBlockingOperations.forMap.withLongValues().decrease(mapUnderTest, key);
 
     assertTrue(mapUnderTest.get(key).equals(-1L));
   }
@@ -55,7 +55,7 @@ public class SomeConcurrentMapWithLongValuesTest {
 
     mapUnderTest.put(key, initialValue);
 
-    SomeConcurrentMap.withLongValues().decrease(mapUnderTest, key);
+    NonBlockingOperations.forMap.withLongValues().decrease(mapUnderTest, key);
 
     assertTrue(mapUnderTest.get(key).equals(initialValue - 1L));
   }
@@ -66,7 +66,7 @@ public class SomeConcurrentMapWithLongValuesTest {
     mapUnderTest.put(key, initialValue);
 
     final Long decreaseBy = 5L;
-    SomeConcurrentMap.withLongValues().decrease(mapUnderTest, key, decreaseBy);
+    NonBlockingOperations.forMap.withLongValues().decrease(mapUnderTest, key, decreaseBy);
 
     assertTrue(mapUnderTest.get(key).equals(initialValue - decreaseBy));
   }
