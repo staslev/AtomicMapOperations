@@ -1,4 +1,4 @@
-package com.slevin.concurrent;
+package com.github.staslev.concurrent.nonblocking;
 
 import com.google.common.base.Function;
 
@@ -24,10 +24,24 @@ public class AtomicMapOperationsForLongValues {
   AtomicMapOperationsForLongValues() {
   }
 
+  /**
+   * Atomically increases the value assigned to <code>key</code> by 1. If <code>key</code> is not present in the map, its value is set to 1.
+   * 
+   * @param map The map on each to perform the operation on.
+   * @param key The key whose value is to be put or transformed.
+   * @param <K> The type of the keys.
+   */
   public <K> void increase(final ConcurrentMap<K, Long> map, final K key) {
     SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, increaseByOneTransformer);
   }
 
+  /**
+   * Atomically increases the value assigned to <code>key</code> by <code>increaseBy</code>. If <code>key</code> is not present in the map, its value is set to <code>increaseBy</code>.
+   *
+   * @param map The map on each to perform the operation on.
+   * @param key The key whose value is to be put or transformed.
+   * @param <K> The type of the keys.
+   */
   public <K> void increase(final ConcurrentMap<K, Long> map, final K key, final long increaseBy) {
     final Function<Long, Long> increaseTransformer = new Function<Long, Long>() {
       @Override
@@ -39,10 +53,24 @@ public class AtomicMapOperationsForLongValues {
     SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, increaseTransformer);
   }
 
+  /**
+   * Atomically decreases the value of <code>key</code> by 1, if the given key is not present in the map, its value is set to -1.
+   *
+   * @param map The map on each to perform the operation on.
+   * @param key The key whose value is to be put or transformed.
+   * @param <K> The type of the keys.
+   */
   public <K> void decrease(final ConcurrentMap<K, Long> map, final K key) {
     SomeConcurrentMap.withImmutableValues().putOrTransform(map, key, decreaseByOneTransformer);
   }
 
+  /**
+   * Atomically decreases the value of <code>key</code> by <code>decreaseBy</code>, if <code>key</code> is not present in the map, its value is set to <code>(-1 * decreaseBy)</code>.
+   *
+   * @param map The map on each to perform the operation on.
+   * @param key The key whose value is to be put or transformed.
+   * @param <K> The type of the keys.
+   */
   public <K> void decrease(final ConcurrentMap<K, Long> map, final K key, final long decreaseBy) {
     final Function<Long, Long> decreaseTransformer = new Function<Long, Long>() {
       @Override

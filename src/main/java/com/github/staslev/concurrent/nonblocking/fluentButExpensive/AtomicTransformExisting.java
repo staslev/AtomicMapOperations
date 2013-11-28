@@ -1,7 +1,7 @@
-package com.slevin.concurrent.fluentButExpensive;
+package com.github.staslev.concurrent.nonblocking.fluentButExpensive;
 
 import com.google.common.base.Function;
-import com.slevin.concurrent.SomeConcurrentMap;
+import com.github.staslev.concurrent.nonblocking.SomeConcurrentMap;
 
 import java.util.concurrent.ConcurrentMap;
 

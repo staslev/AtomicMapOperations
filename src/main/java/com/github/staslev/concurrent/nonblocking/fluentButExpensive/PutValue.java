@@ -1,4 +1,4 @@
-package com.slevin.concurrent.fluentButExpensive;
+package com.github.staslev.concurrent.nonblocking.fluentButExpensive;
 
 import java.util.concurrent.ConcurrentMap;
 

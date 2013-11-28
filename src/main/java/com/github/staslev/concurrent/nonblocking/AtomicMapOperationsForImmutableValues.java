@@ -1,4 +1,4 @@
-package com.slevin.concurrent;
+package com.github.staslev.concurrent.nonblocking;
 
 import com.google.common.base.Function;
 
@@ -35,6 +35,18 @@ public class AtomicMapOperationsForImmutableValues {
     return exitingBucketIncreased;
   }
 
+  /**
+   * Atomically sets the value of <code>key</code> to the result of applying the <code>oldOrNullToNewValueTransformer</code>,
+   * REGARDLESS of whether <code>key</code> WAS, OR WAS NOT, present in the map.
+   *
+   * @param map The map on each to perform the operation on.
+   * @param key The key whose value is to be put or transformed.
+   * @param oldOrNullToNewValueTransformer The transform function to be applied in order to produce values for the given key.
+   *                                       This function WILL BE PASSED NULL in case the given key was not present in the map,
+   *                                       in which case it is expected to produce an initial value.
+   * @param <K> The type of the keys.
+   * @param <V> The type of the values.
+   */
   public <K, V> void putOrTransform(final ConcurrentMap<K, V> map, final K key, final Function<V, V> oldOrNullToNewValueTransformer) {
 
     V previousValueOrNull;
@@ -47,6 +59,18 @@ public class AtomicMapOperationsForImmutableValues {
         && !atomicallyInsertNewEntry(map, key, previousValueOrNull, nextValue));
   }
 
+  /**
+   * In case <code>key</code> IS ALREADY PRESENT in the map, atomically sets its value to the value produced by applying the <code>oldOrNullToNewValueTransformer</code>.
+   * In case the given key was not present in the map, no action will take place.
+   *
+   * @param map The map on each to perform the operation on.
+   * @param key The key whose value is to be put or transformed, in case the given key already present in the map.
+   * @param nonNullOldToNewValueTransformer The transform function to be applied on an EXISTING value corresponding to the given key.
+   *                                        This function WILL NOT BE PASSED NULL values.
+   * @param <K> The type of the keys.
+   * @param <V> The type of the values.
+   * @return true if the value of the given key was transformed, otherwise (if key was not present), false.
+   */
   public <K, V> boolean transformIfPresent(final ConcurrentMap<K, V> map, final K key, final Function<V, V> nonNullOldToNewValueTransformer) {
 
     V previousValue;
