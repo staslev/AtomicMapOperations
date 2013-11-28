@@ -13,7 +13,7 @@
   <artifactId>AtomicMapOperations</artifactId>
   <packaging>jar</packaging>
   <name>AtomicMapOperations</name>
-  <version>1.0</version>
+  <version>1.0-SNAPSHOT</version>
   <description>A lib that provides basic non-blocking atomic operations on concurrent maps.</description>
   <url>https://github.com/staslev/AtomicMapOperations</url>
   <licenses>
@@ -26,7 +26,6 @@
   <scm>
     <connection>scm:git:https://github.com/staslev/AtomicMapOperations.git/tags/AtomicMapOperations-1.0</connection>
     <url>https://github.com/staslev/AtomicMapOperations/tags/AtomicMapOperations-1.0</url>
-    <developerConnection>scm:git:https://github.com/staslev/AtomicMapOperations.git/tags/AtomicMapOperations-1.0</developerConnection>
   </scm>
   <developers>
     <developer>
