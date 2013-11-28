@@ -24,8 +24,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:git:https://github.com/staslev/AtomicMapOperations.git/tags/AtomicMapOperations-1.0</connection>
-    <url>https://github.com/staslev/AtomicMapOperations/tags/AtomicMapOperations-1.0</url>
+    <connection>scm:git:https://github.com/staslev/AtomicMapOperations.git</connection>
+    <url>https://github.com/staslev/AtomicMapOperations</url>
+    <developerConnection>scm:git:https://github.com/staslev/AtomicMapOperations.git</developerConnection>
   </scm>
   <developers>
     <developer>
