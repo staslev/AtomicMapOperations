@@ -1,7 +1,6 @@
 package com.github.staslev.concurrent.nonblocking;
 
 import com.google.common.base.Function;
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,7 +54,7 @@ public class ForMapWithImmutableValuesTest {
     };
 
     final int input = 1;
-    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, aggregator, input);
+    NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(mapUnderTest, key, aggregator, input);
 
     final String expected = Integer.toString(input) + " " + initialValue;
     assertThat(mapUnderTest.get(key), is(expected));
@@ -74,7 +73,7 @@ public class ForMapWithImmutableValuesTest {
     };
 
     final int input = -1;
-    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, aggregator, input);
+    NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(mapUnderTest, key, aggregator, input);
 
     assertThat(mapUnderTest.get(key), is(initialValue));
   }

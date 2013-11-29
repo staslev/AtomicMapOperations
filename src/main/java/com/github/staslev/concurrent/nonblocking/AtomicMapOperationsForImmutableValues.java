@@ -81,7 +81,7 @@ public class AtomicMapOperationsForImmutableValues {
    * @param <V> The type of the values.
    * @param <T> The type of the input.
    */
-  public <K, V, T> void putOrTransform(final ConcurrentMap<K, V> map, final K key, final Aggregator<T, V> aggregator, T input) {
+  public <K, V, T> void putOrAggregate(final ConcurrentMap<K, V> map, final K key, final Aggregator<T, V> aggregator, T input) {
 
     V previousValueOrNull;
     V nextValue;
@@ -106,7 +106,7 @@ public class AtomicMapOperationsForImmutableValues {
    * @param <T> The type of the input.
    * @return true if the value of the given key was transformed, otherwise (if key was not present), false.
    */
-  public <K, V, T> boolean transformIfPresent(final ConcurrentMap<K, V> map, final K key,  final Aggregator<T, V> aggregator, T input) {
+  public <K, V, T> boolean aggregateIfPresent(final ConcurrentMap<K, V> map, final K key, final Aggregator<T, V> aggregator, T input) {
 
     V previousValue;
     V nextValue;

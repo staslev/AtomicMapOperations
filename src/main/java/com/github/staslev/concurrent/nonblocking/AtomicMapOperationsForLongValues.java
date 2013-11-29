@@ -61,7 +61,7 @@ public class AtomicMapOperationsForLongValues {
    * @param <K> The type of the keys.
    */
   public <K> void increase(final ConcurrentMap<K, Long> map, final K key, final long increaseBy) {
-    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(map, key, increaseByAggregator, increaseBy);
+    NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(map, key, increaseByAggregator, increaseBy);
   }
 
   /**
@@ -83,6 +83,6 @@ public class AtomicMapOperationsForLongValues {
    * @param <K> The type of the keys.
    */
   public <K> void decrease(final ConcurrentMap<K, Long> map, final K key, final long decreaseBy) {
-    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(map, key, decreaseByAggregator, decreaseBy);
+    NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(map, key, decreaseByAggregator, decreaseBy);
   }
 }
