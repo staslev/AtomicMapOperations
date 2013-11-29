@@ -1,6 +1,7 @@
 package com.github.staslev.concurrent.nonblocking;
 
 import com.google.common.base.Function;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,5 +40,42 @@ public class ForMapWithImmutableValuesTest {
     NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, oldOrNullToNewValueTransformer);
 
     assertThat(mapUnderTest.get(key), is(KEY_WAS_NOT_PRESENT));
+  }
+
+  @Test
+  public void test_WhenKeyIsPresent_AggregatorResultAssignedToKey() throws Exception {
+
+    mapUnderTest.put(key, initialValue);
+
+    final AtomicMapOperationsForImmutableValues.Aggregator<Integer, String> aggregator = new AtomicMapOperationsForImmutableValues.Aggregator<Integer, String>() {
+      @Override
+      public String aggregate(final Integer input, final String previousValue) {
+        return previousValue != null && input != null && input > 0 ? input.toString() + " " + previousValue : previousValue;
+      }
+    };
+
+    final int input = 1;
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, aggregator, input);
+
+    final String expected = Integer.toString(input) + " " + initialValue;
+    assertThat(mapUnderTest.get(key), is(expected));
+  }
+
+  @Test
+  public void test_WhenKeyNotPresent_AggregatorResultAssignedToKey() throws Exception {
+
+    mapUnderTest.put(key, initialValue);
+
+    final AtomicMapOperationsForImmutableValues.Aggregator<Integer, String> aggregator = new AtomicMapOperationsForImmutableValues.Aggregator<Integer, String>() {
+      @Override
+      public String aggregate(final Integer input, final String previousValue) {
+        return previousValue != null && input != null && input > 0 ? input.toString() + " " + previousValue : previousValue;
+      }
+    };
+
+    final int input = -1;
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, aggregator, input);
+
+    assertThat(mapUnderTest.get(key), is(initialValue));
   }
 }

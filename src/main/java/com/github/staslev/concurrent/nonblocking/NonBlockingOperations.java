@@ -1,10 +1,16 @@
 package com.github.staslev.concurrent.nonblocking;
 
+/**
+ * Provides a set of atomic and non blocking operations on data structures.
+ */
 public class NonBlockingOperations {
 
   private NonBlockingOperations() {
   }
 
+  /**
+   * Provides a set of atomic and non blocking operations on concurrent maps.
+   */
   public static class forMap {
 
     private static final AtomicMapOperationsForImmutableValues FOR_IMMUTABLE_VALUES = new AtomicMapOperationsForImmutableValues();
