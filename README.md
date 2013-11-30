@@ -32,7 +32,9 @@ This will set the key <code>myId</code> to the value of <code>System.currentTime
            }
        };
     
-    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(idToLastHitTimestamp, myId, timestampTransformer);
+    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(idToLastHitTimestamp, 
+                                                                      myId, 
+                                                                      timestampTransformer);
     
 This will aggregatively count only even numbers:
 
@@ -51,11 +53,10 @@ This will aggregatively count only even numbers:
        }
      };
 
-    NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(
-          id2EvenNumbersCount,
-          myId,
-          evenNumbersCounterAggregator,
-          myInput)
+    NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(id2EvenNumbersCount,
+                                                                      myId,
+                                                                      evenNumbersCounterAggregator,
+                                                                      myInput)
  
     
 
