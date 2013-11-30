@@ -26,28 +26,35 @@ This will set the key <code>myId</code> to the value of <code>System.currentTime
     final NonBlockingOperations.Transformer<Long> timestampTransformer = new NonBlockingOperations.Transformer<Long>() {
           @Override
           public Long transform(final Long value) {
+              // if our transformation depended on 'value', we'd have to check for nullity
               return System.currentTimeMillis();
           }
       };
     
     NonBlockingOperations.forMap.withImmutableValues().putOrTransform(idToLastHitTimestamp, myId, timestampTransformer);
     
- This will aggregatively count only even numbers:  
-    
+This will aggregatively count only even numbers:
+
     ConcurrentHashMap<Long, Long> id2EvenNumbersCount = new ConcurrentHashMap<Long, Long>();
+    final int myInput = 2;
+    final Long myId = 12345L;
+    
     final NonBlockingOperations.Aggregator<Integer, Long> evenNumbersCounterAggregator = new NonBlockingOperations.Aggregator<Integer, Long>() {
       @Override
       public Long aggregate(final Integer input, final Long previousValue) {
-        return input % 2 == 0 ? previousValue + 1 : previousValue;
+          // when using putOrAggregate, 'previousValue' CAN BE NULL
+          // when using aggregateIfPresent, it won't
+          long initialValue = previousValue == null ? 0 : previousValue;
+          return input % 2 == 0 ? initialValue + 1 : initialValue;
       }
     };
-    final int myInput = 2;
-    
+
     NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(
-        id2EvenNumbersCount, 
-        myId, 
-        evenNumbersCounterAggregator, 
-        myInput);    
+          id2EvenNumbersCount,
+          myId,
+          evenNumbersCounterAggregator,
+          myInput)
+ 
     
 
 Binaries
