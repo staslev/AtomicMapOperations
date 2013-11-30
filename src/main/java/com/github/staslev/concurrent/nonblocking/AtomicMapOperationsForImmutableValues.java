@@ -1,7 +1,5 @@
 package com.github.staslev.concurrent.nonblocking;
 
-import com.google.common.base.Function;
-
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -11,10 +9,6 @@ import java.util.concurrent.ConcurrentMap;
  *
  */
 public class AtomicMapOperationsForImmutableValues {
-
-  public interface Aggregator<T, V> {
-    V aggregate(T input, V previousValue);
-  }
 
   AtomicMapOperationsForImmutableValues() {
   }
@@ -26,6 +20,8 @@ public class AtomicMapOperationsForImmutableValues {
     try {
       newKeyInserted = previousValueOrNull == null && map.putIfAbsent(key, nextValue) == null;
     } catch (AssertionError assertionError) {
+      // a defensive catch against an assertion error occasionally raised by the NonBlockingHashMap class
+      // should probably be looked into sometime, and ideally removed.
       newKeyInserted = false;
     }
 
@@ -39,6 +35,8 @@ public class AtomicMapOperationsForImmutableValues {
     try {
       exitingBucketIncreased = previousValue != null && map.replace(key, previousValue, nextValue);
     } catch (AssertionError assertionError) {
+      // a defensive catch against an assertion error occasionally raised by the NonBlockingHashMap class
+      // should probably be looked into sometime, and ideally removed.
       exitingBucketIncreased = false;
     }
 
@@ -57,14 +55,15 @@ public class AtomicMapOperationsForImmutableValues {
    * @param <K> The type of the keys.
    * @param <V> The type of the values.
    */
-  public <K, V> void putOrTransform(final ConcurrentMap<K, V> map, final K key, final Function<V, V> oldOrNullToNewValueTransformer) {
+  public <K, V> void putOrTransform(final ConcurrentMap<K, V> map, final K key,
+      final NonBlockingOperations.Transformer<V> oldOrNullToNewValueTransformer) {
 
     V previousValueOrNull;
     V nextValue;
 
     do {
       previousValueOrNull = map.get(key);
-      nextValue = oldOrNullToNewValueTransformer.apply(previousValueOrNull);
+      nextValue = oldOrNullToNewValueTransformer.transform(previousValueOrNull);
     } while (!atomicallyUpdateExistingEntry(map, key, previousValueOrNull, nextValue)
         && !atomicallyInsertNewEntry(map, key, previousValueOrNull, nextValue));
   }
@@ -81,7 +80,7 @@ public class AtomicMapOperationsForImmutableValues {
    * @param <V> The type of the values.
    * @param <T> The type of the input.
    */
-  public <K, V, T> void putOrAggregate(final ConcurrentMap<K, V> map, final K key, final Aggregator<T, V> aggregator, T input) {
+  public <K, V, T> void putOrAggregate(final ConcurrentMap<K, V> map, final K key, final NonBlockingOperations.Aggregator<T, V> aggregator, T input) {
 
     V previousValueOrNull;
     V nextValue;
@@ -106,7 +105,8 @@ public class AtomicMapOperationsForImmutableValues {
    * @param <T> The type of the input.
    * @return true if the value of the given key was transformed, otherwise (if key was not present), false.
    */
-  public <K, V, T> boolean aggregateIfPresent(final ConcurrentMap<K, V> map, final K key, final Aggregator<T, V> aggregator, T input) {
+  public <K, V, T> boolean aggregateIfPresent(final ConcurrentMap<K, V> map, final K key, final NonBlockingOperations.Aggregator<T, V> aggregator,
+      T input) {
 
     V previousValue;
     V nextValue;
@@ -135,7 +135,8 @@ public class AtomicMapOperationsForImmutableValues {
    * @param <V> The type of the values.
    * @return true if the value of the given key was transformed, otherwise (if key was not present), false.
    */
-  public <K, V> boolean transformIfPresent(final ConcurrentMap<K, V> map, final K key, final Function<V, V> nonNullOldToNewValueTransformer) {
+  public <K, V> boolean transformIfPresent(final ConcurrentMap<K, V> map, final K key,
+      final NonBlockingOperations.Transformer<V> nonNullOldToNewValueTransformer) {
 
     V previousValue;
     V nextValue;
@@ -143,7 +144,7 @@ public class AtomicMapOperationsForImmutableValues {
     do {
       previousValue = map.get(key);
       if (previousValue != null) {
-        nextValue = nonNullOldToNewValueTransformer.apply(previousValue);
+        nextValue = nonNullOldToNewValueTransformer.transform(previousValue);
       } else {
         return false;
       }

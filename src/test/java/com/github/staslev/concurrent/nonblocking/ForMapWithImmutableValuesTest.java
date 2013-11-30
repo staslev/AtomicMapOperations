@@ -1,6 +1,5 @@
 package com.github.staslev.concurrent.nonblocking;
 
-import com.google.common.base.Function;
 import org.junit.Test;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,6 +8,10 @@ import java.util.concurrent.ConcurrentMap;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+/**
+ * FUNCTIONAL tests for NonBlockingOperations.forMap.withImmutableValues() factory method.
+ * DOES NOT deal with performance benchmarking whatsoever.
+ */
 public class ForMapWithImmutableValuesTest {
 
   public static final String KEY_WAS_NOT_PRESENT = "key_was_not_present";
@@ -16,9 +19,9 @@ public class ForMapWithImmutableValuesTest {
   private ConcurrentMap<Integer, String> mapUnderTest = new ConcurrentHashMap<Integer, String>();
   private String initialValue = "testValue";
   private Integer key = 1;
-  private Function<String, String> oldOrNullToNewValueTransformer = new Function<String, String>() {
+  private NonBlockingOperations.Transformer<String> oldOrNullToNewValueTransformer = new NonBlockingOperations.Transformer<String>() {
     @Override
-    public String apply(final String input) {
+    public String transform(final String input) {
       return input == null ? KEY_WAS_NOT_PRESENT : KEY_WAS_PRESENT;
     }
   };
@@ -34,6 +37,16 @@ public class ForMapWithImmutableValuesTest {
   }
 
   @Test
+  public void test_WhenKeyNotPresent_TransformerIfPresentDoesNotChangeValue() throws Exception {
+
+    final String oldValue = mapUnderTest.get(key);
+
+    NonBlockingOperations.forMap.withImmutableValues().transformIfPresent(mapUnderTest, key, oldOrNullToNewValueTransformer);
+
+    assertThat(mapUnderTest.get(key), is(oldValue));
+  }
+
+  @Test
   public void test_WhenKeyIsPresent_TransformerResultAssignedToKey() throws Exception {
 
     NonBlockingOperations.forMap.withImmutableValues().putOrTransform(mapUnderTest, key, oldOrNullToNewValueTransformer);
@@ -46,7 +59,7 @@ public class ForMapWithImmutableValuesTest {
 
     mapUnderTest.put(key, initialValue);
 
-    final AtomicMapOperationsForImmutableValues.Aggregator<Integer, String> aggregator = new AtomicMapOperationsForImmutableValues.Aggregator<Integer, String>() {
+    final NonBlockingOperations.Aggregator<Integer, String> aggregator = new NonBlockingOperations.Aggregator<Integer, String>() {
       @Override
       public String aggregate(final Integer input, final String previousValue) {
         return previousValue != null && input != null && input > 0 ? input.toString() + " " + previousValue : previousValue;
@@ -65,7 +78,7 @@ public class ForMapWithImmutableValuesTest {
 
     mapUnderTest.put(key, initialValue);
 
-    final AtomicMapOperationsForImmutableValues.Aggregator<Integer, String> aggregator = new AtomicMapOperationsForImmutableValues.Aggregator<Integer, String>() {
+    final NonBlockingOperations.Aggregator<Integer, String> aggregator = new NonBlockingOperations.Aggregator<Integer, String>() {
       @Override
       public String aggregate(final Integer input, final String previousValue) {
         return previousValue != null && input != null && input > 0 ? input.toString() + " " + previousValue : previousValue;
@@ -76,5 +89,23 @@ public class ForMapWithImmutableValuesTest {
     NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(mapUnderTest, key, aggregator, input);
 
     assertThat(mapUnderTest.get(key), is(initialValue));
+  }
+
+  @Test
+  public void test_WhenKeyNotPresent_AggregateIfPresentDoesNotChangeValue() throws Exception {
+
+    final NonBlockingOperations.Aggregator<Integer, String> aggregator = new NonBlockingOperations.Aggregator<Integer, String>() {
+      @Override
+      public String aggregate(final Integer input, final String previousValue) {
+        return previousValue != null && input != null && input > 0 ? input.toString() + " " + previousValue : previousValue;
+      }
+    };
+
+    final int input = 1;
+    final String oldValue = mapUnderTest.get(key);
+
+    NonBlockingOperations.forMap.withImmutableValues().aggregateIfPresent(mapUnderTest, key, aggregator, input);
+
+    assertThat(mapUnderTest.get(key), is(oldValue));
   }
 }

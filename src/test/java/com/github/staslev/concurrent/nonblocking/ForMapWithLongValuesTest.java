@@ -8,6 +8,10 @@ import java.util.concurrent.ConcurrentMap;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+/**
+ * FUNCTIONAL tests for NonBlockingOperations.forMap.withLongValues() factory method.
+ * DOES NOT deal with performance benchmarking whatsoever.
+ */
 public class ForMapWithLongValuesTest {
 
   private ConcurrentMap<String, Long> mapUnderTest = new ConcurrentHashMap<String, Long>();
@@ -15,7 +19,7 @@ public class ForMapWithLongValuesTest {
   private Long initialValue = 3L;
 
   @Test
-  public void test_WhenKeyNotPresent_IncreasesValueByOne() throws Exception {
+  public void test_WhenKeyNotPresentAndIncreased_ValueIsOne() throws Exception {
 
     NonBlockingOperations.forMap.withLongValues().increase(mapUnderTest, key);
 
@@ -23,7 +27,7 @@ public class ForMapWithLongValuesTest {
   }
 
   @Test
-  public void test_WhenKeyPresent_IncreasesValueByOne() throws Exception {
+  public void test_WhenKeyPresentAndIncreasedByOne_ValueIncreasedByOne() throws Exception {
 
     mapUnderTest.put(key, initialValue);
 
@@ -33,7 +37,7 @@ public class ForMapWithLongValuesTest {
   }
 
   @Test
-  public void test_WhenKeyPresent_ValueIncreasedByMany() throws Exception {
+  public void test_WhenKeyPresentAndIncreasedByMany_ValueIncreasedByMany() throws Exception {
 
     mapUnderTest.put(key, initialValue);
 
@@ -44,7 +48,7 @@ public class ForMapWithLongValuesTest {
   }
 
   @Test
-  public void test_WhenKeyNotPresent_DecreasesValueByOne() throws Exception {
+  public void test_WhenKeyNotPresentAndDecreased_ValueIsMinusOne() throws Exception {
 
     NonBlockingOperations.forMap.withLongValues().decrease(mapUnderTest, key);
 
@@ -52,7 +56,7 @@ public class ForMapWithLongValuesTest {
   }
 
   @Test
-  public void test_WhenKeyPresent_DecreasesValueByOne() throws Exception {
+  public void test_WhenKeyPresentAndDecreased_ValueDecreasesByOne() throws Exception {
 
     mapUnderTest.put(key, initialValue);
 
@@ -62,7 +66,7 @@ public class ForMapWithLongValuesTest {
   }
 
   @Test
-  public void test_WhenKeyPresent_DecreasesValueByMay() throws Exception {
+  public void test_WhenKeyPresentAndDecreasedByMany_ValueIsDecreasesByMany() throws Exception {
 
     mapUnderTest.put(key, initialValue);
 

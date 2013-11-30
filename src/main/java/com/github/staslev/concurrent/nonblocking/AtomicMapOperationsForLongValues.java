@@ -1,6 +1,5 @@
 package com.github.staslev.concurrent.nonblocking;
 
-import com.google.common.base.Function;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -14,30 +13,30 @@ public class AtomicMapOperationsForLongValues {
   AtomicMapOperationsForLongValues() {
   }
 
-  AtomicMapOperationsForImmutableValues.Aggregator<Long, Long> increaseByAggregator = new AtomicMapOperationsForImmutableValues.Aggregator<Long, Long>() {
+  NonBlockingOperations.Aggregator<Long, Long> increaseByAggregator = new NonBlockingOperations.Aggregator<Long, Long>() {
     @Override
     public Long aggregate(final Long input, final Long previousValue) {
       return previousValue + input;
     }
   };
 
-  AtomicMapOperationsForImmutableValues.Aggregator<Long, Long> decreaseByAggregator = new AtomicMapOperationsForImmutableValues.Aggregator<Long, Long>() {
+  NonBlockingOperations.Aggregator<Long, Long> decreaseByAggregator = new NonBlockingOperations.Aggregator<Long, Long>() {
     @Override
     public Long aggregate(final Long input, final Long previousValue) {
       return previousValue - input;
     }
   };
 
-  final Function<Long, Long> increaseByOneTransformer = new Function<Long, Long>() {
+  final NonBlockingOperations.Transformer<Long> increaseByOneTransformer = new NonBlockingOperations.Transformer<Long>() {
     @Override
-    public Long apply(final Long previousValue) {
+    public Long transform(final Long previousValue) {
       return previousValue == null ? 1L : previousValue + 1;
     }
   };
 
-  final Function<Long, Long> decreaseByOneTransformer = new Function<Long, Long>() {
+  final NonBlockingOperations.Transformer<Long> decreaseByOneTransformer = new NonBlockingOperations.Transformer<Long>() {
     @Override
-    public Long apply(final Long previousValue) {
+    public Long transform(final Long previousValue) {
       return previousValue == null ? -1L : previousValue - 1;
     }
   };

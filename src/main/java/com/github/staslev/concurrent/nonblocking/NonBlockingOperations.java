@@ -5,6 +5,34 @@ package com.github.staslev.concurrent.nonblocking;
  */
 public class NonBlockingOperations {
 
+  /**
+   * Produces an aggregated value based on an input and a previous value.
+   * 
+   * @param <TInput> The type of the input.
+   * @param <TValue> The type of the output value.
+   */
+  public interface Aggregator<TInput, TValue> {
+
+    /**
+     * Produces an aggregated value based on an input and a previous value.
+     * 
+     * @param input The new input value to be taken into account when producing an aggregated result.
+     * @param previousValue The aggregated results up until now.
+     * @return A new aggregated results based on the input and previous value.
+     */
+    TValue aggregate(TInput input, TValue previousValue);
+  }
+
+  public interface Transformer<V> {
+
+    /**
+    * Transforms an existing value into a new value.
+    * @param value The existing value to transform.
+    * @return A transformed value.
+    */
+    V transform(V value);
+  }
+
   private NonBlockingOperations() {
   }
 
