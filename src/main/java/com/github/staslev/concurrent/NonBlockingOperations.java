@@ -1,4 +1,4 @@
-package com.github.staslev.concurrent.nonblocking;
+package com.github.staslev.concurrent;
 
 /**
  * Provides a set of atomic and non blocking operations on data structures.

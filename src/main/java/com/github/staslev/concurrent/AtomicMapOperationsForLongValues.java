@@ -1,4 +1,4 @@
-package com.github.staslev.concurrent.nonblocking;
+package com.github.staslev.concurrent;
 
 import java.util.concurrent.ConcurrentMap;
 
