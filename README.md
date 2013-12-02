@@ -1,17 +1,23 @@
 AtomicMapOperations
 ===================
-A library that provides common operations on concurrent maps, particularly non blocking ones.
+A library that provides basic but common operations on concurrent maps, particularly non blocking ones, without making its clients jump through hoops trying to wrap their head around atomicity and questions like "wait, coult that <code>value</code> have changed since I've done that <code>get</code>?". 
 
-It is often non tirival to perform atomic actions on concurrent maps, especially when employing non-blocking paradigms. The *AtomicMapOperations* lib provides the following constructs to abstract some of these difficulties away: <code>putOrTransform</code>, <code>transformIfPresent</code>, <code>putOrAggregate</code>, <code>aggregateIfPresent</code>. 
+*AtomicMapOperations* lib provides the following constructs to abstract some of these difficulties away:         
+  * <code>putOrTransform</code>
+  * <code>transformIfPresent</code>
+  * <code>putOrAggregate</code>
+  * <code>aggregateIfPresent</code> 
 
-In case of a map with values of type Long, typically used for counting hits for a given key, instead of the generic constructs mentioned earlier, the lib offers: <code>increase</code> and <code>decrease</code>.
+In case of a map with values of type Long, typically used for counting hits for a given key, instead of the generic constructs mentioned earlier, the lib offers the didicated methods: 
+  * <code>increase</code> 
+  * <code>decrease</code>
 
-While there may be a certain redundancy when it comes to expressiveness, since transformations can be expressed using aggregations and vice verse, each has its own benefits. Generally speaking, **transformation is best used when the next value is dependent only upon the previous value**, while **aggregations is best used when the next value is dependent both upon the previous value, and an input value**. Using each appropriately can reduce the number of object instances created to carry out an operation. For instance, using a transformation to perform an aggregation may require creating a new transform (i.e., an instance of <code>Transformer</code>) per operation, as opposed to using an aggregator, where a single aggregator instance can be used for multiple operations.
+While there may be a certain redundancy when it comes to expressiveness, since transformations can be expressed using aggregations and vice verse, each has its own benefits. Generally speaking, **transformation is best used when the next value is dependent only upon the previous value**, while **aggregations is best used when the next value is dependent both upon the previous value, and some input value**. Using each appropriately can reduce the number of object instances created to carry out an operation. For instance, using a transformation to perform an aggregation may require creating a new transform (i.e., an instance of <code>Transformer</code>) per operation, as opposed to using an aggregator, where a single aggregator instance can be used for multiple operations.
 
 Examples
 =======
 
-This will atomically increase the value of the key 'now' in a non blocking manner. If done manually this requires some hoop jumping as no synchronization is used, and multiple thread can change this value simultatiously:
+This will atomically increase the value of the key <code>now</code> in a non blocking manner:
  
     ConcurrentHashMap<Long, Long> hitsPerTimeStamp = new ConcurrentHashMap<Long, Long>();
     final long now = System.currentTimeMillis();
@@ -19,7 +25,7 @@ This will atomically increase the value of the key 'now' in a non blocking manne
     NonBlockingOperations.forMap.withLongValues().increase(hitsPerTimeStamp, now);
     
 
-This will set the key <code>myId</code> to the value of <code>System.currentTimeMillis()</code> regardless of it was present in the map before:
+This will set the key <code>myId</code> to the value of <code>System.currentTimeMillis()</code> regardless of whether it was present in the map before:
 
     ConcurrentHashMap<Long, Long> idToLastHitTimestamp = new ConcurrentHashMap<Long, Long>();
     final long myId = 12345L;
@@ -36,7 +42,7 @@ This will set the key <code>myId</code> to the value of <code>System.currentTime
                                                                       myId, 
                                                                       timestampTransformer);
     
-This will aggregatively count only even numbers:
+This will aggregatively count even numbers only:
 
     ConcurrentHashMap<Long, Long> id2EvenNumbersCount = new ConcurrentHashMap<Long, Long>();
     final int myInput = 2;
