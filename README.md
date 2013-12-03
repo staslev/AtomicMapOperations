@@ -74,4 +74,12 @@ Binaries
       <version>1.0</version>
     </dependency>
 
+Or...    
+
+    <dependency>
+     <groupId>com.github.staslev</groupId>
+     <artifactId>AtomicMapOperations</artifactId>
+     <version>1.1-SNAPSHOT</version>
+    </dependency>
+
 (hosted by [sonatype](https://oss.sonatype.org/content/repositories/releases/) and [maven central](http://search.maven.org/))
