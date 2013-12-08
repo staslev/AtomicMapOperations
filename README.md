@@ -1,6 +1,6 @@
 AtomicMapOperations
 ===================
-A library that provides basic but common operations on concurrent maps, particularly non blocking ones, without making its clients jump through hoops trying to wrap their head around atomicity and questions like "wait, coult that <code>value</code> have changed since I've done that <code>get</code>?". 
+A library that provides basic but common operations on concurrent maps, particularly non blocking ones, without making its clients jump through hoops trying to wrap their head around atomicity and questions like "wait, could that <code>value</code> have changed since I've done that <code>get</code>?". 
 
 *AtomicMapOperations* lib provides the following constructs to abstract some of these difficulties away:         
   * <code>putOrTransform</code>
@@ -8,7 +8,7 @@ A library that provides basic but common operations on concurrent maps, particul
   * <code>putOrAggregate</code>
   * <code>aggregateIfPresent</code> 
 
-In case of a map with values of type Long, typically used for counting hits for a given key, instead of the generic constructs mentioned earlier, the lib offers the didicated methods: 
+In case of a map with values of type Long, typically used for counting hits for a given key, instead of the generic constructs mentioned earlier, the lib offers the dedicated methods: 
   * <code>increase</code> 
   * <code>decrease</code>
 
@@ -72,6 +72,14 @@ Binaries
       <groupId>com.github.staslev</groupId>
       <artifactId>AtomicMapOperations</artifactId>
       <version>1.0</version>
+    </dependency>
+
+Or...    
+
+    <dependency>
+     <groupId>com.github.staslev</groupId>
+     <artifactId>AtomicMapOperations</artifactId>
+     <version>1.1-SNAPSHOT</version>
     </dependency>
 
 (hosted by [sonatype](https://oss.sonatype.org/content/repositories/releases/) and [maven central](http://search.maven.org/))
