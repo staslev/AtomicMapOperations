@@ -1,6 +1,5 @@
 package com.github.staslev.concurrent;
 
-import com.github.staslev.concurrent.NonBlockingOperations;
 import org.junit.Test;
 
 import java.util.concurrent.ConcurrentHashMap;

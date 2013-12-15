@@ -1,13 +1,11 @@
 package com.github.staslev.concurrent;
 
-import com.github.staslev.concurrent.NonBlockingOperations;
 import org.junit.Test;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
