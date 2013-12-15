@@ -12,14 +12,21 @@ In case of a map with values of type Long, typically used for counting hits for 
   * <code>increase</code> 
   * <code>decrease</code>
 
-While there may be a certain redundancy when it comes to expressiveness, since transformations can be expressed using aggregations and vice verse, each has its own benefits. Generally speaking, **transformation is best used when the next value is dependent only upon the previous value**, while **aggregations is best used when the next value is dependent both upon the previous value, and some input value**. Using each appropriately can reduce the number of object instances created to carry out an operation. For instance, using a transformation to perform an aggregation may require creating a new transform (i.e., an instance of <code>Transformer</code>) per operation, as opposed to using an aggregator, where a single aggregator instance can be used for multiple operations.
+The AtmoicMapOpertaions lib has been successfuly used in <code>Storm</code> production environemnts with a <code>NonBlockingHashMap</code>(https://github.com/stephenc/high-scale-lib) being the underlying concurrent map implementation.
+
+Aggregators vs. Transformers
+=============================
+While there may be a certain redundancy when it comes to these interfaces, since transformations can be expressed as aggregations and vice verse, each has its own benefits. Generally speaking, **transformation is best used when the next value is dependent only upon the previous value**, while **aggregations is best used when the next value is dependent both upon the previous value, and some input value**. The two exist side by side to allow fine tuning and reduce the number of object instances created to carry out operations on the underlying map. 
+For instance, using a transformation to perform an aggregation may require creating a new transform (i.e., an instance of <code>Transformer</code>) per operation to hold a closure with the input value, as opposed to using an aggregator, which can be passed an input value from the outside and thus be reused.
+
+
 
 Examples
 =======
 
 This will atomically increase the value of the key <code>now</code> in a non blocking manner:
  
-    ConcurrentHashMap<Long, Long> hitsPerTimeStamp = new ConcurrentHashMap<Long, Long>();
+    ConcurrentMap<Long, Long> hitsPerTimeStamp = new ConcurrentHashMap<Long, Long>();
     final long now = System.currentTimeMillis();
     
     NonBlockingOperations.forMap.withLongValues().increase(hitsPerTimeStamp, now);
@@ -27,8 +34,9 @@ This will atomically increase the value of the key <code>now</code> in a non blo
 
 This will set the key <code>myId</code> to the value of <code>System.currentTimeMillis()</code> regardless of whether it was present in the map before:
 
-    ConcurrentHashMap<Long, Long> idToLastHitTimestamp = new ConcurrentHashMap<Long, Long>();
+    ConcurrentMap<Long, Long> idToLastHitTimestamp = new ConcurrentHashMap<Long, Long>();
     final long myId = 12345L;
+    
     final NonBlockingOperations.Transformer<Long> timestampTransformer = 
      new NonBlockingOperations.Transformer<Long>() {
            @Override
@@ -44,7 +52,7 @@ This will set the key <code>myId</code> to the value of <code>System.currentTime
     
 This will aggregatively count even numbers only:
 
-    ConcurrentHashMap<Long, Long> id2EvenNumbersCount = new ConcurrentHashMap<Long, Long>();
+    ConcurrentMap<Long, Long> id2EvenNumbersCount = new ConcurrentHashMap<Long, Long>();
     final int myInput = 2;
     final Long myId = 12345L;
     
