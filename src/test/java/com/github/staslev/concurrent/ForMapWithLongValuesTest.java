@@ -76,25 +76,4 @@ public class ForMapWithLongValuesTest {
     assertThat(mapUnderTest.get(key), is(initialValue - decreaseBy));
   }
 
-  @Test
-  public void testName() throws Exception {
-ConcurrentHashMap<Long, Long> id2EvenNumbersCount = new ConcurrentHashMap<Long, Long>();
-final int myInput = 2;
-final Long myId = 12345L;
-
-final NonBlockingOperations.Aggregator<Integer, Long> evenNumbersCounterAggregator = new NonBlockingOperations.Aggregator<Integer, Long>() {
-  @Override
-  public Long aggregate(final Integer input, final Long previousValue) {
-      long initialValue = previousValue == null ? 0 : previousValue;
-      return input % 2 == 0 ? initialValue + 1 : initialValue;
-  }
-};
-
-NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(
-      id2EvenNumbersCount,
-      myId,
-      evenNumbersCounterAggregator,
-      myInput);
-
-  }
 }

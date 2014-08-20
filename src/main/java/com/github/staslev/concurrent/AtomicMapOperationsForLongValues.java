@@ -3,47 +3,49 @@ package com.github.staslev.concurrent;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * 
- * Provides atomic non blocking operations on maps with Long values, this is typically the case when values are 
+ * Provides atomic non blocking operations on maps with Long values, this is typically the case when values are
  * counters of some sort.
- * 
  */
 public class AtomicMapOperationsForLongValues {
 
   AtomicMapOperationsForLongValues() {
   }
 
-  NonBlockingOperations.Aggregator<Long, Long> increaseByAggregator = new NonBlockingOperations.Aggregator<Long, Long>() {
-    @Override
-    public Long aggregate(final Long input, final Long previousValue) {
-      return previousValue + input;
-    }
-  };
+  NonBlockingOperations.Aggregator<Long, Long> increaseByAggregator =
+          new NonBlockingOperations.Aggregator<Long, Long>() {
+            @Override
+            public Long aggregate(final Long input, final Long previousValue) {
+              return previousValue + input;
+            }
+          };
 
-  NonBlockingOperations.Aggregator<Long, Long> decreaseByAggregator = new NonBlockingOperations.Aggregator<Long, Long>() {
-    @Override
-    public Long aggregate(final Long input, final Long previousValue) {
-      return previousValue - input;
-    }
-  };
+  NonBlockingOperations.Aggregator<Long, Long> decreaseByAggregator =
+          new NonBlockingOperations.Aggregator<Long, Long>() {
+            @Override
+            public Long aggregate(final Long input, final Long previousValue) {
+              return previousValue - input;
+            }
+          };
 
-  final NonBlockingOperations.Transformer<Long> increaseByOneTransformer = new NonBlockingOperations.Transformer<Long>() {
-    @Override
-    public Long transform(final Long previousValue) {
-      return previousValue == null ? 1L : previousValue + 1;
-    }
-  };
+  final NonBlockingOperations.Transformer<Long> increaseByOneTransformer =
+          new NonBlockingOperations.Transformer<Long>() {
+            @Override
+            public Long transform(final Long previousValue) {
+              return previousValue == null ? 1L : previousValue + 1;
+            }
+          };
 
-  final NonBlockingOperations.Transformer<Long> decreaseByOneTransformer = new NonBlockingOperations.Transformer<Long>() {
-    @Override
-    public Long transform(final Long previousValue) {
-      return previousValue == null ? -1L : previousValue - 1;
-    }
-  };
+  final NonBlockingOperations.Transformer<Long> decreaseByOneTransformer =
+          new NonBlockingOperations.Transformer<Long>() {
+            @Override
+            public Long transform(final Long previousValue) {
+              return previousValue == null ? -1L : previousValue - 1;
+            }
+          };
 
   /**
    * Atomically increases the value assigned to <code>key</code> by 1. If <code>key</code> is not present in the map, its value is set to 1.
-   * 
+   *
    * @param map The map to perform the operation on.
    * @param key The key whose value is to be put or transformed.
    * @param <K> The type of the keys.
