@@ -26,52 +26,55 @@ Examples
 
 This will atomically increase the value of the key <code>now</code> in a non blocking manner:
  
-    ConcurrentMap<Long, Long> hitsPerTimeStamp = new ConcurrentHashMap<Long, Long>();
-    final long now = System.currentTimeMillis();
+```java
+ConcurrentMap<Long, Long> hitsPerTimeStamp = new ConcurrentHashMap<Long, Long>();
+final long now = System.currentTimeMillis();
     
-    NonBlockingOperations.forMap.withLongValues().increase(hitsPerTimeStamp, now);
-    
+NonBlockingOperations.forMap.withLongValues().increase(hitsPerTimeStamp, now);
+```
 
 This will set the key <code>myId</code> to the value of <code>System.currentTimeMillis()</code> regardless of whether it was present in the map before:
 
-    ConcurrentMap<Long, Long> idToLastHitTimestamp = new ConcurrentHashMap<Long, Long>();
-    final long myId = 12345L;
-    
-    final NonBlockingOperations.Transformer<Long> timestampTransformer = 
-     new NonBlockingOperations.Transformer<Long>() {
-           @Override
-           public Long transform(final Long value) {
-               // if our transformation depended on 'value', we'd have to check for nullity
-               return System.currentTimeMillis();
-           }
-       };
-    
-    NonBlockingOperations.forMap.withImmutableValues().putOrTransform(idToLastHitTimestamp, 
-                                                                      myId, 
-                                                                      timestampTransformer);
-    
+```java
+ConcurrentMap<Long, Long> idToLastHitTimestamp = new ConcurrentHashMap<Long, Long>();
+final long myId = 12345L;
+
+final NonBlockingOperations.Transformer<Long> timestampTransformer = 
+ new NonBlockingOperations.Transformer<Long>() {
+       @Override
+       public Long transform(final Long value) {
+           // if our transformation depended on 'value', we'd have to check for nullity
+           return System.currentTimeMillis();
+       }
+   };
+
+NonBlockingOperations.forMap.withImmutableValues().putOrTransform(idToLastHitTimestamp, 
+                                                                  myId, 
+                                                                  timestampTransformer);
+```
 This will aggregatively count even numbers only:
 
-    ConcurrentMap<Long, Long> id2EvenNumbersCount = new ConcurrentHashMap<Long, Long>();
-    final int myInput = 2;
-    final Long myId = 12345L;
-    
-    final NonBlockingOperations.Aggregator<Integer, Long> evenNumbersCounterAggregator = 
-     new NonBlockingOperations.Aggregator<Integer, Long>() {
-       @Override
-       public Long aggregate(final Integer input, final Long previousValue) {
-           // when using putOrAggregate, 'previousValue' CAN BE NULL
-           // when using aggregateIfPresent, it won't
-           long initialValue = previousValue == null ? 0 : previousValue;
-           return input % 2 == 0 ? initialValue + 1 : initialValue;
-       }
-     };
-
-    NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(id2EvenNumbersCount,
-                                                                      myId,
-                                                                      evenNumbersCounterAggregator,
-                                                                      myInput)
+```java
+ ConcurrentMap<Long, Long> id2EvenNumbersCount = new ConcurrentHashMap<Long, Long>();
+ final int myInput = 2;
+ final Long myId = 12345L;
  
+ final NonBlockingOperations.Aggregator<Integer, Long> evenNumbersCounterAggregator = 
+  new NonBlockingOperations.Aggregator<Integer, Long>() {
+    @Override
+    public Long aggregate(final Integer input, final Long previousValue) {
+        // when using putOrAggregate, 'previousValue' CAN BE NULL
+        // when using aggregateIfPresent, it won't
+        long initialValue = previousValue == null ? 0 : previousValue;
+        return input % 2 == 0 ? initialValue + 1 : initialValue;
+    }
+  };
+
+ NonBlockingOperations.forMap.withImmutableValues().putOrAggregate(id2EvenNumbersCount,
+                                                                   myId,
+                                                                   evenNumbersCounterAggregator,
+                                                                   myInput)
+```
     
 
 Binaries
